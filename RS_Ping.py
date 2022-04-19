@@ -71,6 +71,8 @@ def worldLatency(servers):
     for host, worldnum in servers.items():
         stdout = Popen('ping -n 1 ' + host, shell=True, stdout=PIPE).stdout
         output = str(stdout.read())
+        if 'timed out' in output:
+            continue
         latency = re.findall("(?<=Minimum = )[0-9]{2,}", output)
         intlatency = int(latency[0])
 
@@ -85,6 +87,8 @@ output1 = worldLatency(worlds)
 
 #sorting the output by latency
 output2=dict(sorted(output1.items(),key= lambda x:x[1]))
+
+    
 
 #printing the sorted dictionary
 for x, y in output2.items():
